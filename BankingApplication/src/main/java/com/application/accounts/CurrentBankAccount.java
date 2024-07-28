@@ -28,7 +28,7 @@ public class CurrentBankAccount {
 			logger.info("");
 			accDetails.setWithdrawAmt(withdrawlValue);
 			accDetails.setBalance(accDetails.getBalance().subtract(accDetails.getWithdrawAmt()));
-			accDetails.setWithdrawAmt(accDetails.getTotalWithdrawAmt().add(accDetails.getWithdrawAmt()));
+			accDetails.setTotalWithdrawAmt(accDetails.getTotalWithdrawAmt().add(accDetails.getWithdrawAmt()));
 			logger.info("Withdrawl Amount for this transaction is: {}", accDetails.getWithdrawAmt());
 			logger.info("Total Withdrawl Amount is : {}", accDetails.getTotalWithdrawAmt());
 			logger.info("Balance after Withdrawl is: {}", accDetails.getBalance());

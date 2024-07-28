@@ -8,7 +8,7 @@ import lombok.Data;
 public class AccountDetails {
 	private String bankAccountNo;
 	private String bankAccountName;
-	private BigDecimal balance = BigDecimal.ZERO;
+	private BigDecimal balance = BigDecimal.valueOf(500.00).setScale(2);
 	private String dateOfOpenning;
 	private BigDecimal depositAmt;
 	private BigDecimal withdrawAmt = BigDecimal.ZERO;
