@@ -2,7 +2,7 @@ echo ***************************
 echo run_jar.bat Begins...
 echo ***************************
 
-CD /D "%work_dir%\target"
+CD /D "C:\Preparations\BankingApplicationProject\BankingApplication\target"
 
 REM Run the JAR file with the specified properties
 REM Ensure the path to the JAR file is correct
