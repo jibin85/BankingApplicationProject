@@ -1,0 +1,66 @@
+My Learnings,
+
+Spring boot will contain Spring-boot-Maven-Plugin,
+just add the plugin in the appropriate child Pom.xml alone, dont add in Parent Pom.xml so that it will not override it.
+also, instead of clean install use clean package thats what done in install_jar.bat file
+also, Parent pom.xml don't need any <build> section which is conflicting in Child Pom.xml
+
+so here in this MANIFEST.MF file we need to check and ensure few thing to run java applications as a jar file, So if your child module application is not working then in MANIFEST.MF check these attributes are present i.e.,
+
+Go to appropriate child modules /target folder 
+1. Ensure the child modules .jar file is generated after build
+2. Open the cmd and navigate to the /target
+3. Give "jar tf banking-application-core-0.0.1-SNAPSHOT.jar | findstr MANIFEST.MF" ---  Lists files in the JAR and filters to check if MANIFEST.MF is present
+   In console you will get "META-INF/MANIFEST.MF"
+4. Give "jar xf banking-application-core-0.0.1-SNAPSHOT.jar META-INF/MANIFEST.MF" --- Extracts the MANIFEST.MF file from the JAR.
+   No Response in console
+5. Give "META-INF\MANIFEST.MF" --- Displays the content of the extracted MANIFEST.MF file.
+6. After opening the file, check it for "Main-Class" and "Start-Class" attributes in the MANIFEST.MF file, definitely it should be present in order to 
+   Start the child module's application as a jar.
+Note: After following these steps under /target folder there should be a /META-INF should be created along with MANIFEST.MF file in it.
+
+Here's the Sample for a success MANIFEST.MF file
+
+Manifest-Version: 1.0
+Spring-Boot-Classpath-Index: BOOT-INF/classpath.idx
+Spring-Boot-Layers-Index: BOOT-INF/layers.idx
+Start-Class: com.application.BankingApplication
+Spring-Boot-Classes: BOOT-INF/classes/
+Spring-Boot-Lib: BOOT-INF/lib/
+Build-Jdk-Spec: 1.8
+Spring-Boot-Version: 2.6.2
+Created-By: Maven JAR Plugin 3.3.0
+Main-Class: org.springframework.boot.loader.JarLauncher
+
+In a Nutshell:
+1. Parent POM.xml should not contain any <build> section which conflicts the Child POM.xml
+2. The Child POM.xml should contain "spring-boot-maven-plugin" as follows
+   <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+3. Ensure Same Plugin is not in Parent POM.xml,
+   Note: Although common <Plugins> of different Child modules can be given one-time under Parent POM.xml
+   in order to avoid duplications.
+4. The Plugin Version in Child POM.xml should match with the Spring boot version which Parent POM.xml used. i.e., "<version>${spring-boot.version}</version>"
+5. After ensuring these Build using mvn clean package
+6. Check for the /target folder in the appropriate child module
+7. Appropriate .jar should be generated along with .jar.original to ensure build is done correct
+8. Configure the install_jar.bat and run_jar.bat files and run the modules individually 
+
+cmd
+1. jar tf banking-application-core-0.0.1-SNAPSHOT.jar | findstr MANIFEST.MF
+2. jar xf banking-application-core-0.0.1-SNAPSHOT.jar META-INF/MANIFEST.MF
+3. META-INF\MANIFEST.MF
