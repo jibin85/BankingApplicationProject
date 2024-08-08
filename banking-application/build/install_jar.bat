@@ -2,7 +2,7 @@
 SET work_dir=%CD%
 
 REM Change to the project directory
-CD /D "C:\Preparations\BankingApplicationProject\banking-application\banking-application-core\" || exit /b %ERRORLEVEL%
+CD /D "../../banking-application" || exit /b %ERRORLEVEL%
 
 REM Clean and package the application using Maven, skipping tests
 CALL mvn clean package -DskipTests || exit /b %ERRORLEVEL%

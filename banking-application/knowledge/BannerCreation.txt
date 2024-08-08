@@ -1,0 +1,15 @@
+To create a Banner:
+
+Banner is the ASCII art which is to be displayed in the console once the application Starts
+
+To begin with,
+
+1. If no banner is there Spring will give the default banner.
+2. To Customise the banner create a .txt file containing the ASCII art generated from any website under 
+   src/main/resources in that particular module.
+3. To refer that banner go to application.properties in the same src/main/resources and give the below comment to enable
+   the banner to be displayed.
+   -- "spring.banner.location=classpath:banking-reference-data-banner.txt"
+4. Build the project and run the application.
+5. The updated ASCII art will be reflected in the application console. 
+ 
