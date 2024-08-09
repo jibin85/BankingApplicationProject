@@ -1,6 +1,0 @@
-com\application\pojo\AccountDetails.class
-com\application\balance\BalanceDetails.class
-com\application\accounts\SavingsBankAccount.class
-com\application\menu\Menu.class
-com\application\accounts\CurrentBankAccount.class
-com\application\BankingApplication.class
