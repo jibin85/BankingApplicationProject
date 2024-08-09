@@ -1,0 +1,122 @@
+This is used to learn some knowledge on command lines which are used for 
+1. install_jar.bat and 
+2. run_jar.bat files
+
+************************************************************************************************************************
+
+                                                    ################
+                                                    install_jar.bat:
+                                                    ################
+
+Keywords and Their Purposes:
+1. @echo off:
+        Disables the display of commands in the Command Prompt window, showing only the output of the commands. This 
+        makes the script’s output cleaner and easier to read.
+2. SET:
+        Defines or modifies environment variables. For example, `SET work_dir=%CD%` sets the `work_dir` variable to the 
+        current directory path, which allows you to return to this directory later in the script.
+3. REM:
+        Denotes a comment in the batch file. It’s used to explain what the script is doing. Comments do not affect 
+        execution and are for documentation purposes.
+4. CD /D: 
+        Changes the current directory and drive (if necessary). The `/D` switch is used to allow changing the drive as 
+        well as the directory. For example, `CD /D "../../banking-application"` changes to the specified directory 
+        relative to the current one.
+5. ||:
+        Executes the command following it only if the preceding command fails (i.e., returns a non-zero exit code). It’s
+        used here for error handling. If changing the directory or running Maven fails, the script exits with the same 
+        error code as the failed command.
+6. exit /b %ERRORLEVEL%:
+        Exits the batch script or a subroutine with the specified exit code. `%ERRORLEVEL%` holds the exit code of the 
+        last executed command. This ensures that the script exits with the error code of the failed command if any 
+        command fails.
+7. CALL:
+        Calls another batch file or command within the current batch script. It’s used to invoke 
+        `mvn clean package-DskipTests` while allowing the script to return to continue execution after the command 
+        completes.
+8. mvn clean package -DskipTests:
+        Executes Maven commands to clean and package the application, skipping the test phase. The `clean` command 
+        removes previously compiled files, and `package` compiles the code and packages it into a JAR or WAR file. The 
+        `-DskipTests` flag skips running tests during the build.
+9. CD /D "%work_dir%":
+        Returns to the original directory stored in the `work_dir` variable. This is done after Maven completes its 
+        execution, ensuring that any subsequent commands operate from the original directory.
+10. run_jar.bat:
+        Executes the `run_jar.bat` script. This assumes that `run_jar.bat` is located in the `work_dir` and is 
+        responsible for running the JAR files or performing further operations.
+
+In Summary,
+The script does the following:
+1. **Stores the Current Directory**: Saves the current directory in `work_dir`.
+2. **Changes Directory**: Switches to the `../../banking-application` directory.
+3. **Cleans and Packages Application**: Uses Maven to clean and package the application, skipping tests.
+4. **Returns to Original Directory**: Changes back to the original directory.
+5. **Runs Another Batch File**: Executes `run_jar.bat` from the original directory.
+
+This script automates the process of cleaning and building a Maven project and then executes another batch file to 
+perform additional tasks.
+
+************************************************************************************************************************
+
+                                                    ############
+                                                    run_jar.bat:
+                                                    ############
+
+Keywords and Their Purposes:
+1. @echo off:
+        Disables the display of commands in the Command Prompt window, showing only the output of the commands. 
+2. echo:
+        Displays a message or text in the Command Prompt window. It’s used here to print messages indicating the start
+        and progress of the script.
+3. REM: 
+        Denotes a comment in the batch file. It’s used to explain what the script is doing and does not affect execution.
+4. SET:
+        Defines or modifies environment variables. For example, SET "ORIGINAL_DIR=%CD%" sets the ORIGINAL_DIR variable 
+        to the current directory path.
+5. CD /D:
+        Changes the current directory. The /D switch allows changing the drive as well as the directory. It’s used 
+        here to navigate to different directories.
+6. ||:
+        Executes the command following it only if the preceding command fails (i.e., returns a non-zero exit code). It’s
+        used for error handling to display a message and exit if a directory change fails.
+7. exit /b:
+        Exits from the batch script or a subroutine with a specified exit code. The /b switch is used to exit from the 
+        current script or subroutine rather than the Command Prompt window.
+8. if not exist: 
+        Checks if a specified file does not exist. If the condition is true, it executes the commands within the  
+        parentheses. It’s used here to verify that the required JAR files are present before attempting to run them.
+9. START:
+        Starts a separate window to run a specified command. It’s used here to start new Command Prompt windows to run 
+        the JAR files.
+10. CMD /c: 
+        Starts a new Command Prompt window, executes the specified command, and then terminates the window. This is  
+        used to run the JAR files.
+11. %ERRORLEVEL%: 
+        Represents the exit code of the last executed command. It’s used to check if the last command was successful or
+        not.
+12. START "banking-reference-data" CMD /k java -jar "%banking_ref_data_dir%\banking-reference-data-0.0.1-SNAPSHOT.jar"
+        a. START "banking-reference-data": 
+                This opens a new Command Prompt window with the title "banking-reference-data".
+        b. CMD /k: 
+                This starts a new Command Prompt session within that window.
+        c. java -jar "%banking_ref_data_dir%\banking-reference-data-0.0.1-SNAPSHOT.jar": 
+                This is the command that gets executed in the new Command Prompt window. It runs the JAR file specified.
+           Key Points:
+                a. Keeping the Window Open: 
+                        By using CMD /k, the Command Prompt window remains open after executing the JAR file. This allows you to
+                        view the logs, errors, or output produced by the application. 
+                b. Debugging: 
+                        It is useful for debugging purposes or if you want to check the output of your application after it starts.
+                Summary: The script changes directories, sets environment variables, checks if required JAR files exist, runs those 
+                         JAR files in new Command Prompt windows, and handles errors. The CMD /c ensures that each JAR file runs in 
+                         its own Command Prompt window and then closes after execution.
+        
+           Alternative: 
+                Using /c:
+                        If you want the Command Prompt window to close automatically after executing the command, you can use /c
+                        instead of /k
+
+In summary, 
+    1. CMD /c ensures that each JAR file runs in its own Command Prompt window and then closes after execution and 
+    2. CMD /k is useful when you want to keep the Command Prompt open to review the output and any potential issues that
+       arise from running your command.
