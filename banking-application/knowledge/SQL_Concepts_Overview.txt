@@ -1,0 +1,91 @@
+
+
+-----------------------------------------------------------------PRIMARY KEY-------------------------------------------------------------------------
+
+
+A primary key is a fundamental concept in relational database management systems (RDBMS) and data modeling. It serves as a unique identifier for each record (or row) in a database table. Here’s a detailed explanation of what a primary key is and why it’s important:
+
+Key Characteristics of a Primary Key
+
+1. Uniqueness: 
+	Each value in the primary key column must be unique across the table. No two rows can have the same primary key value. This ensures that each record can be uniquely identified.	
+2. Non-Null: 
+	Primary key columns cannot contain `NULL` values. Every record must have a valid and non-null primary key value.
+3. Immutable: 
+	Ideally, the value of a primary key should not change over time. Once assigned, the primary key value should remain consistent to avoid issues with record identification and relationships.
+4. Single or Composite: 
+	A primary key can be a single column (simple primary key) or a combination of multiple columns (composite primary key). A composite primary key is used when a single column is not sufficient to uniquely identify a record.
+
+Purpose of a Primary Key
+
+1. Unique Identification: 
+	The primary key uniquely identifies each row in the table. This is essential for data retrieval, updates, and deletion operations.
+2. Indexing: 
+	Primary keys are often indexed by the database system to speed up query performance. This index helps in efficient searching and retrieval of records.
+3. Referential Integrity: 
+	Primary keys are used to establish and enforce relationships between tables. Foreign keys in other tables reference primary keys to maintain referential integrity.
+4. Efficient Data Management: 
+	Using primary keys ensures that operations on the database (like joins, searches, and updates) are performed efficiently and accurately.
+
+Example
+
+Consider a simple table for storing customer information:
+
+```sql
+CREATE TABLE Customers (
+    CustomerID INT PRIMARY KEY,
+    CustomerName VARCHAR(100),
+    Email VARCHAR(100)
+);
+```
+
+In this example:
+
+- `CustomerID` is the primary key. It uniquely identifies each customer record in the `Customers` table.
+- Each customer must have a unique `CustomerID` value, and no two customers can share the same `CustomerID`.
+- `CustomerID` cannot be null.
+
+Composite Primary Key Example
+
+If a single column is not sufficient to uniquely identify a record, you can use a composite primary key:
+
+```sql
+CREATE TABLE Orders (
+    OrderID INT,
+    ProductID INT,
+    PRIMARY KEY (OrderID, ProductID)
+);
+```
+
+In this table:
+
+- The combination of `OrderID` and `ProductID` forms the composite primary key.
+- Each combination of `OrderID` and `ProductID` must be unique, but either column alone may not be sufficient to uniquely identify a record.
+
+In JPA (Java Persistence API)
+
+In JPA, you use the `@Id` annotation to specify the primary key for an entity:
+
+```java
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
+public class Customer {
+
+    @Id
+    private Long customerId;
+    
+    private String customerName;
+
+    // Getters and setters
+}
+```
+
+In this example:
+
+- `customerId` is annotated with `@Id`, making it the primary key of the `Customer` entity.
+
+Summary
+
+A primary key is crucial in relational databases for ensuring that each record is uniquely identifiable and maintaining data integrity. It facilitates efficient data management, supports relational operations, and enforces consistency across the database.
